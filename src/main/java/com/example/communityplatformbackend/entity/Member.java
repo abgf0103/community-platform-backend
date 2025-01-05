@@ -1,19 +1,17 @@
-package com.example.communityplatformbackend.model;
+package com.example.communityplatformbackend.entity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import lombok.*;
+import lombok.AllArgsConstructor;
 
 import java.util.Date;
 
-@Getter
-@Setter
-@ToString
-@NoArgsConstructor
-@AllArgsConstructor
-public class MemberVO {
+@Entity
+public class Member {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long memberId;
     private String username;
     private String nickname;
@@ -21,4 +19,6 @@ public class MemberVO {
     private String password;
     private Date joinDate;
     private String status;
+
+
 }
