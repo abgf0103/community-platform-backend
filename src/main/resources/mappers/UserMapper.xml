@@ -2,15 +2,37 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.communityplatformbackend.mapper.UserMapper">
 
+<!--  모든 유저 조회  -->
     <select id="selectAllUsers" resultType="UserVO">
         SELECT *
         FROM USERS
     </select>
 
+<!--  아이디로 사용자 조회  -->
+    <select id="findByUsername" parameterType="String" resultType="UserVO">
+        SELECT *
+        FROM USERS
+        WHERE username = #{username}
+    </select>
+
+<!--  유저ID로 닉네임 조회  -->
     <select id="getNicknameByID" resultType="String">
         SELECT NICKNAME
         FROM USERS
         WHERE USER_ID = #{userID}
     </select>
 
+<!--  로그인  -->
+    <select id="loginUser" resultType="UserVO">
+        SELECT *
+        FROM USERS
+        WHERE 	USERNAME = #{username}
+        AND		PASSWORD = #{password}
+    </select>
+
+<!--  회원가입  -->
+    <insert id="signUpUser">
+        INSERT INTO USERS (username, email, password, nickname)
+        VALUES (#{username}, #{email}, #{password}, #{nickname})
+    </insert>
 </mapper>

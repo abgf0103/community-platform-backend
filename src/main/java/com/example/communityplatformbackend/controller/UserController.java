@@ -5,11 +5,9 @@ import com.example.communityplatformbackend.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.io.UnsupportedEncodingException;
 import java.util.List;
 
 @RestController
@@ -50,6 +48,16 @@ public class UserController {
         return ResponseEntity.ok(nickname);
     }
 
-//    @PostMapping("/signup")
-//    public ResponseEntity<String>
+    @PostMapping("/login")
+    public boolean login(@RequestBody UserVO userVO) {
+        log.info("Login user: {}", userVO);
+        return userService.loginUser(userVO);
+    }
+
+
+    @PostMapping("/signup")
+    public ResponseEntity<String> registerUser(@RequestBody UserVO userVO) throws UnsupportedEncodingException {
+        userService.signUpUser(userVO);
+        return ResponseEntity.ok("회원가입 성공");
+    }
 }
