@@ -1,7 +1,7 @@
 package com.example.communityplatformbackend.controller;
 
-import com.example.communityplatformbackend.model.MemberVO;
-import com.example.communityplatformbackend.service.MemberService;
+import com.example.communityplatformbackend.model.UserVO;
+import com.example.communityplatformbackend.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -13,14 +13,14 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/member")
+@RequestMapping("/api/user")
 @Slf4j
-public class MemberController {
-    private final MemberService memberService;
+public class UserController {
+    private final UserService userService;
 
     @Autowired
-    public MemberController(MemberService memberService) {
-        this.memberService = memberService;
+    public UserController(UserService userService) {
+        this.userService = userService;
     }
 
 //    private final JdbcTemplate jdbcTemplate;
@@ -40,13 +40,16 @@ public class MemberController {
 //    }
 
     @GetMapping("/list2")
-    public List<MemberVO> getUsers2() {
-        return memberService.selectAllUsers();
+    public List<UserVO> getUsers2() {
+        return userService.selectAllUsers();
     }
 
     @GetMapping("/getNickname")
     public ResponseEntity<String> getNickname(@RequestParam Long memberID) {
-        String nickname = memberService.getNicknameByID(memberID);
+        String nickname = userService.getNicknameByID(memberID);
         return ResponseEntity.ok(nickname);
     }
+
+//    @PostMapping("/signup")
+//    public ResponseEntity<String>
 }

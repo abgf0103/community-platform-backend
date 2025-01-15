@@ -11,8 +11,8 @@ import java.util.Date;
 @Setter
 @ToString
 @AllArgsConstructor
-public class MemberVO {
-    private Long memberID;
+public class UserVO {
+    private Long userID;
     private String username;
     private String nickname;
     private String email;
