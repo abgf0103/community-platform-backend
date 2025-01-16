@@ -40,14 +40,6 @@ public class UserService {
 
     public boolean loginUser(UserVO userVO) {
         UserVO user = userMapper.findByUsername(userVO.getUsername());
-        String encryptedPassword = passwordEncoder.encode(userVO.getPassword());
-        userVO.setPassword(encryptedPassword);
-        log.info("맞춰야 하는 암호화된 비밀번호 : " + user.getPassword());
-        log.info("시도하는 암호화된 비밀번호 : "+encryptedPassword);
-        if(user == null){
-            log.info("false");
-        }
-
-        return true;
+        return passwordEncoder.matches(userVO.getPassword(), user.getPassword());
     }
 }

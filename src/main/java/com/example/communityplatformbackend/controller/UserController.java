@@ -1,10 +1,15 @@
 package com.example.communityplatformbackend.controller;
 
+import com.example.communityplatformbackend.model.JwtResponse;
 import com.example.communityplatformbackend.model.UserVO;
+import com.example.communityplatformbackend.service.JwtTokenProvider;
 import com.example.communityplatformbackend.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.UnsupportedEncodingException;
@@ -20,6 +25,12 @@ public class UserController {
     public UserController(UserService userService) {
         this.userService = userService;
     }
+
+    @Autowired
+    private AuthenticationManager authenticationManager;
+
+    @Autowired
+    private JwtTokenProvider jwtTokenProvider;
 
 //    private final JdbcTemplate jdbcTemplate;
 //    public HelloWorldController(JdbcTemplate jdbcTemplate) {
@@ -49,9 +60,19 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public boolean login(@RequestBody UserVO userVO) {
+    public ResponseEntity<?> login(@RequestBody UserVO userVO) {
         log.info("Login user: {}", userVO);
-        return userService.loginUser(userVO);
+        if(userService.loginUser(userVO)){
+            Authentication authentication = authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(
+                            userVO.getUsername(), userVO.getPassword())
+            );
+
+            String token = jwtTokenProvider.generateToken(authentication);
+            return ResponseEntity.ok(new JwtResponse(token));
+        }else{
+            return ResponseEntity.ok("Invalid username or password");
+        }
     }
 
 
