@@ -34,8 +34,9 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf().disable()
-                .authorizeHttpRequests(auth -> auth.anyRequest().authenticated())  // .authorizeRequests() -> .authorizeHttpRequests()
-                .httpBasic();  // No changes needed here
+                .authorizeHttpRequests(auth -> auth
+                        .anyRequest().permitAll())  // 모든 요청을 인증 없이 허용
+                .httpBasic();  // 기본 인증 (혹은 필요에 따라 인증 제거)
         return http.build();
     }
 }

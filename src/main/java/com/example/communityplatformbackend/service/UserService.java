@@ -3,6 +3,8 @@ package com.example.communityplatformbackend.service;
 import com.example.communityplatformbackend.mapper.UserMapper;
 import com.example.communityplatformbackend.model.UserVO;
 
+import com.example.communityplatformbackend.model.entity.UserEntity;
+import com.example.communityplatformbackend.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -23,6 +25,9 @@ public class UserService {
         this.passwordEncoder = new BCryptPasswordEncoder();
     }
 
+    @Autowired
+    private UserRepository userRepository;
+
     public List<UserVO> selectAllUsers() {
         return userMapper.selectAllUsers();
     }
@@ -41,5 +46,20 @@ public class UserService {
     public boolean loginUser(UserVO userVO) {
         UserVO user = userMapper.findByUsername(userVO.getUsername());
         return passwordEncoder.matches(userVO.getPassword(), user.getPassword());
+    }
+
+    // jpa test
+    public UserEntity registerUser(UserVO userVO) {
+        UserEntity userEntity = new UserEntity(
+                userVO.getUsername(),
+                userVO.getNickname(),
+                userVO.getEmail(),
+                userVO.getPassword()
+        );
+        return userRepository.save(userEntity);
+    }
+
+    public List<UserEntity> getAllUsers() {
+        return userRepository.findAll();
     }
 }
